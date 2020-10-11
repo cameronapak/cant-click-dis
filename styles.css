@@ -1,0 +1,78 @@
+html {
+    /* background-color: black; */
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+@media (prefers-color-scheme: dark) {
+    html {
+        background-color: black;
+        color: white;
+    }
+}
+
+#title {
+    font-size: 72px;
+    transform: rotate(-12deg);
+}
+
+.container {
+    height: 100vh;
+    width: 100vw;
+}
+
+.button {
+    z-index: 2;
+    position: absolute;
+    border: 3px solid black;
+    font-weight: bold;
+    padding: 8px 16px;
+    border-radius: 8px;
+    background-color: lightgreen;
+}
+
+.button:hover {
+    transform: scale(1.1);
+    filter: brightness(1.1);
+}
+
+.button:active {
+    transform: scale(0.9);
+    filter: brightness(0.9);
+}
+
+#current-level {
+    position: absolute;
+    bottom: 12px;
+    left: 32px;
+}
+
+#score {
+    position: absolute;
+    bottom: 48px;
+    left: 32px;
+}
+
+.toast-active {
+    bottom: 5% !important;
+    opacity: 1 !important;
+}
+
+#toast {
+    opacity: 0;
+    box-sizing: border-box;
+    width: fit-content;
+    padding: 16px 48px;
+    color: white;
+    background-color: lightslategrey;
+    border-radius: 50px;
+    font-size: xxx-large;
+    text-align: left;
+    position: absolute;
+    transition: all 0.05s ease-in-out;
+    left: calc(50% - 378px / 2);
+    bottom: 0;
+}
+
+#toast-message {
+    margin: 0;
+}
