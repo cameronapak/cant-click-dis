@@ -86,6 +86,7 @@ function setUpOnHoverListener() {
       currentHealth -= healthFailStep;
       if (currentHealth <= 0) {
         document.getElementById('title').innerText = 'YOU LOSE 😭'
+        getButton().setAttribute('disabled', true)
         isGameOver = true
         clearTimeout(teleportTimeout)
       } else {
