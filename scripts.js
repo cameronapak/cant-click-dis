@@ -79,38 +79,48 @@ function teleportButton() {
   getButton().style.left = `${yPos}px`
 }
 
+let hasHovered
 function setUpOnHoverListener() {
   getButton().onmouseover = () => {
-    if (isGameOver) return
+    if (hasHovered || isGameOver) return
+
+    hasHovered = true
+
     teleportTimeout = setTimeout(() => {
       currentHealth -= healthFailStep;
       if (currentHealth <= 0) {
         document.getElementById('title').innerText = 'YOU LOSE 😭'
         getButton().setAttribute('disabled', true)
         isGameOver = true
-        clearTimeout(teleportTimeout)
       } else {
         randomlyGrowOrShrinkButton()
         teleportButton()
         showToastMessage('👎 HAHA!', true)
       }
+      hasHovered = false
     }, buttonTeleportDelay)
+
+    console.log(teleportTimeout)
   }
 }
 
 function setUpLevelUpClickListener() {
   getButton().onclick = () => {
     clearTimeout(teleportTimeout)
+
     if (isGameOver) return
 
     buttonTeleportDelay -= stepDelayRemoval
     currentScore += 25
+    hasHovered = false
+
     if (currentScore >= currentLevel * 200) {
       currentLevel += 1
       showToastMessage('🚀 Level Up!', false)
     } else {
       showToastMessage('👍 Good Job!', false)
     }
+
     getLevelText().innerText = `LEVEL: ${currentLevel}`
     getScoreText().innerText = `SCORE: ${currentScore}`
     teleportButton()
