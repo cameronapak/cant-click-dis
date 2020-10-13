@@ -1,3 +1,19 @@
+// initialize sounds
+const failSound = new Audio('./assets/audio/fart1.mp3')
+const loseSound = new Audio('./assets/audio/fart2.mp3')
+const scoreSound = new Audio('./assets/audio/jump.wav')
+const levelUpSound = new Audio('./assets/audio/level-up.wav')
+
+const backgroundMusic = new Audio('./assets/audio/background-music.mp3')
+backgroundMusic.loop = true
+
+const soundsEnum = {
+  FAIL: 'fail',
+  LOSE: 'lose',
+  SCORE: 'score',
+  LEVEL_UP: 'level-up',
+}
+
 // get boundaries of screen (https://stackoverflow.com/a/8876069)
 const screenY = Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0)
 const screenX = Math.max(document.documentElement.clientHeight || 0, window.innerHeight || 0)
@@ -13,6 +29,33 @@ let healthFailStep = 25;
 let stepDelayRemoval = 5;
 
 let teleportTimeout
+
+function playSound(sound) {
+  try {
+    switch (sound) {
+      case soundsEnum.FAIL: {
+        failSound.play()
+        break
+      }
+      case soundsEnum.LOSE: {
+        loseSound.play()
+        break
+      }
+      case soundsEnum.SCORE: {
+        scoreSound.play()
+        break
+      }
+      case soundsEnum.LEVEL_UP: {
+        levelUpSound.play()
+        break
+      }
+      default: break
+    }
+  } catch {
+    // can't play sound yet 
+    // click the DOM my dude!
+  }
+}
 
 function getLevelText() {
   return document.getElementById('current-level')
@@ -63,7 +106,7 @@ function showToastMessage(message, isFail = false) {
   getToastMessage().classList.toggle('toast-active')
   setTimeout(() => {
     getToastMessage().classList.toggle('toast-active')
-  }, 500)
+  }, 650)
 }
 
 function randomlyGrowOrShrinkButton() {
@@ -89,10 +132,12 @@ function setUpOnHoverListener() {
     teleportTimeout = setTimeout(() => {
       currentHealth -= healthFailStep;
       if (currentHealth <= 0) {
+        playSound(soundsEnum.LOSE)
         document.getElementById('title').innerText = 'YOU LOSE 😭'
         getButton().setAttribute('disabled', true)
         isGameOver = true
       } else {
+        playSound(soundsEnum.FAIL)
         randomlyGrowOrShrinkButton()
         teleportButton()
         showToastMessage('👎 HAHA!', true)
@@ -104,8 +149,14 @@ function setUpOnHoverListener() {
   }
 }
 
+let isFirstClick = true
 function setUpLevelUpClickListener() {
   getButton().onclick = () => {
+    if (isFirstClick) {
+      backgroundMusic.play()
+      isFirstClick = false
+    }
+
     clearTimeout(teleportTimeout)
 
     if (isGameOver) return
@@ -115,9 +166,11 @@ function setUpLevelUpClickListener() {
     hasHovered = false
 
     if (currentScore >= currentLevel * 200) {
+      playSound(soundsEnum.LEVEL_UP)
       currentLevel += 1
       showToastMessage('🚀 Level Up!', false)
     } else {
+      playSound(soundsEnum.SCORE)
       showToastMessage('👍 Good Job!', false)
     }
 
