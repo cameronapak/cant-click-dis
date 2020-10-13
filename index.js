@@ -93,6 +93,19 @@ function getRandomButtonPosition() {
   return { xPos, yPos }
 }
 
+function updateHealthBar() {
+  document.getElementById('myBar').style.width = `${currentHealth}%`
+  document.getElementById('myBar').innerText = `${currentHealth}%`
+
+  if (currentHealth === 0) {
+    document.getElementById('myBar').style.padding = '0px'
+    document.getElementById('myBar').style.width = 'fit-content'
+    document.getElementById('myBar').style.backgroundColor = 'transparent'
+    document.getElementById('myBar').style.margin = '0px 0px 0px 8px'
+    document.getElementById('myBar').innerText = ':( lol'
+  }
+}
+
 function tempUpdateButtonColor(color) {
   getButton().style.backgroundColor = color
   setTimeout(() => {
@@ -138,6 +151,7 @@ function setUpOnHoverListener() {
 
     teleportTimeout = setTimeout(() => {
       currentHealth -= healthFailStep
+      updateHealthBar()
       if (currentHealth <= 0) {
         playSound(soundsEnum.LOSE)
         document.getElementById('title').innerText = 'YOU LOSE 😭'

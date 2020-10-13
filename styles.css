@@ -14,6 +14,26 @@ html {
     }
 }
 
+#myProgress {
+    background-color: #FFFFFF55;
+    position: absolute;
+    width: 50%;
+    bottom: 1.5%;
+    right: 3%;
+    border-radius: 99px;
+}
+
+#myBar {
+    box-sizing: border-box;
+    padding: 0 1rem;
+    height: 30px;
+    background-color: #4CAF50;
+    text-align: center; /* To center it horizontally (if you want) */
+    line-height: 30px; /* To center it vertically */
+    color: white;
+    border-radius: 99px;
+}
+
 #title {
     font-size: 72px;
     transform: rotate(-12deg);
