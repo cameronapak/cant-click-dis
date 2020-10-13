@@ -137,12 +137,13 @@ function setUpOnHoverListener() {
     hasHovered = true
 
     teleportTimeout = setTimeout(() => {
-      currentHealth -= healthFailStep;
+      currentHealth -= healthFailStep
       if (currentHealth <= 0) {
         playSound(soundsEnum.LOSE)
         document.getElementById('title').innerText = 'YOU LOSE 😭'
         getButton().setAttribute('disabled', true)
         isGameOver = true
+        clearInterval(teleportInterval)
       } else {
         tempUpdateButtonColor('palevioletred')
         playSound(soundsEnum.FAIL)
@@ -158,6 +159,7 @@ function setUpOnHoverListener() {
 }
 
 let isFirstClick = true
+let teleportInterval
 function setUpLevelUpClickListener() {
   getButton().onclick = (event) => {
     if (!event.isTrusted) return
@@ -165,8 +167,12 @@ function setUpLevelUpClickListener() {
     if (isFirstClick) {
       backgroundMusic.play()
       isFirstClick = false
+      teleportInterval = setInterval(() => {
+        teleportButton()
+      }, buttonTeleportDelay * 2)
     }
 
+    clearInterval(teleportInterval)
     clearTimeout(teleportTimeout)
 
     if (isGameOver) return
@@ -186,6 +192,9 @@ function setUpLevelUpClickListener() {
 
     getLevelText().innerText = `LEVEL: ${currentLevel}`
     getScoreText().innerText = `SCORE: ${currentScore}`
+    teleportInterval = setInterval(() => {
+      teleportButton()
+    }, buttonTeleportDelay * 2)
     teleportButton()
   }
 }
