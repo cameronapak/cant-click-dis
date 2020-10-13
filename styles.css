@@ -12,10 +12,14 @@ html {
         background-color: black;
         color: white;
     }
+
+    #myProgress {
+        border: 1px solid #FFFFFF55;
+    }
 }
 
 #myProgress {
-    background-color: #FFFFFF55;
+    border: 1px solid lightslategrey;
     position: absolute;
     width: 50%;
     bottom: 1.5%;

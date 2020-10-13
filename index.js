@@ -19,14 +19,14 @@ const screenY = Math.max(document.documentElement.clientWidth || 0, window.inner
 const screenX = Math.max(document.documentElement.clientHeight || 0, window.innerHeight || 0)
 
 let currentLevel = 1;
-let buttonTeleportDelay = 500;
+let buttonTeleportDelay = 750;
 let currentScore = 0;
 let isGameOver = false;
 
 let currentHealth = 100;
-let healthFailStep = 25;
+// let healthFailStep = 20;
 
-let stepDelayRemoval = 5;
+let stepDelayRemoval = 7;
 
 let teleportTimeout
 
@@ -106,11 +106,50 @@ function updateHealthBar() {
   }
 }
 
+function loseGame() {
+  document.getElementById('title').innerText = 'YOU LOSE 😭'
+  getButton().setAttribute('disabled', true)
+  isGameOver = true
+  clearInterval(teleportInterval)
+}
+
+function updateHealth({ amount, isAdd = false, isSubtract = false }) {
+  if (isAdd) {
+    if (currentHealth + amount > 100) {
+      currentHealth = 100
+    } else {
+      currentHealth += amount
+    }
+
+    if (currentScore >= currentLevel * 200) {
+      playSound(soundsEnum.LEVEL_UP)
+      currentLevel += 1
+      showToastMessage('🚀 Level Up!', false)
+    } else {
+      playSound(soundsEnum.SCORE)
+      showToastMessage('👍 Good Job!', false)
+    }
+  } else if (isSubtract) {
+    if (currentHealth - amount < 0) {
+      currentHealth = 0
+      playSound(soundsEnum.LOSE)
+      loseGame()
+    } else {
+      showToastMessage('👎 HAHA!', true)
+      currentHealth -= amount
+      playSound(soundsEnum.FAIL)
+    }
+  }
+
+  randomlyGrowOrShrinkButton()
+  updateHealthBar()
+}
+
 function tempUpdateButtonColor(color) {
   getButton().style.backgroundColor = color
   setTimeout(() => {
     getButton().style.backgroundColor = ''
-  }, buttonTeleportDelay - 200)
+  }, 200)
 }
 
 function showToastMessage(message, isFail = false) {
@@ -142,36 +181,6 @@ function teleportButton() {
   getButton().style.left = `${yPos}px`
 }
 
-let hasHovered
-function setUpOnHoverListener() {
-  getButton().onmouseover = () => {
-    if (hasHovered || isGameOver) return
-
-    hasHovered = true
-
-    teleportTimeout = setTimeout(() => {
-      currentHealth -= healthFailStep
-      updateHealthBar()
-      if (currentHealth <= 0) {
-        playSound(soundsEnum.LOSE)
-        document.getElementById('title').innerText = 'YOU LOSE 😭'
-        getButton().setAttribute('disabled', true)
-        isGameOver = true
-        clearInterval(teleportInterval)
-      } else {
-        tempUpdateButtonColor('palevioletred')
-        playSound(soundsEnum.FAIL)
-        randomlyGrowOrShrinkButton()
-        teleportButton()
-        showToastMessage('👎 HAHA!', true)
-      }
-      hasHovered = false
-    }, buttonTeleportDelay)
-
-    console.log(teleportTimeout)
-  }
-}
-
 let isFirstClick = true
 let teleportInterval
 function setUpLevelUpClickListener() {
@@ -183,7 +192,7 @@ function setUpLevelUpClickListener() {
       isFirstClick = false
       teleportInterval = setInterval(() => {
         teleportButton()
-      }, buttonTeleportDelay * 2)
+      }, buttonTeleportDelay * 3)
     }
 
     clearInterval(teleportInterval)
@@ -191,23 +200,18 @@ function setUpLevelUpClickListener() {
 
     if (isGameOver) return
 
-    buttonTeleportDelay -= stepDelayRemoval
+    updateHealth({ amount: 10, isAdd: true })
+
+    buttonTeleportDelay = Math.max(buttonTeleportDelay - stepDelayRemoval, 350)
+    console.log('buttonTeleportDelay', buttonTeleportDelay)
     currentScore += 25
     hasHovered = false
-
-    if (currentScore >= currentLevel * 200) {
-      playSound(soundsEnum.LEVEL_UP)
-      currentLevel += 1
-      showToastMessage('🚀 Level Up!', false)
-    } else {
-      playSound(soundsEnum.SCORE)
-      showToastMessage('👍 Good Job!', false)
-    }
 
     getLevelText().innerText = `LEVEL: ${currentLevel}`
     getScoreText().innerText = `SCORE: ${currentScore}`
     teleportInterval = setInterval(() => {
       teleportButton()
+      updateHealth({ amount: 10, isSubtract: true })
     }, buttonTeleportDelay * 3)
     teleportButton()
   }
@@ -217,7 +221,6 @@ function setUpLevelUpClickListener() {
 function initializeApp() {
   getButton().onkeypress = (e) => e.preventDefault()
   teleportButton()
-  setUpOnHoverListener()
   setUpLevelUpClickListener()
   getLevelText().innerText = `LEVEL: ${currentLevel}`
   getScoreText().innerText = `SCORE: ${currentScore}`
