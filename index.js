@@ -159,7 +159,9 @@ function setUpOnHoverListener() {
 
 let isFirstClick = true
 function setUpLevelUpClickListener() {
-  getButton().onclick = () => {
+  getButton().onclick = (event) => {
+    if (!event.isTrusted) return
+
     if (isFirstClick) {
       backgroundMusic.play()
       isFirstClick = false
@@ -190,6 +192,7 @@ function setUpLevelUpClickListener() {
 
 // initialize app by randomly placing button
 function initializeApp() {
+  getButton().onkeypress = (e) => e.preventDefault()
   teleportButton()
   setUpOnHoverListener()
   setUpLevelUpClickListener()
