@@ -1,0 +1,110 @@
+html {
+    /* background-color: black; */
+    font-family: Arial, Helvetica, sans-serif;
+    /* background: url('https://source.unsplash.com/featured/?nature,electronics,cats,dogs,ferret'); */
+    /* background: url('https://source.unsplash.com/featured/?animals'); */
+    /* background-repeat: no-repeat;
+    background-size: cover; */
+}
+
+@media (prefers-color-scheme: dark) {
+    html {
+        background-color: black;
+        color: white;
+    }
+
+    #myProgress {
+        border: 1px solid #FFFFFF55;
+    }
+}
+
+#myProgress {
+    border: 1px solid lightslategrey;
+    position: absolute;
+    width: 50%;
+    bottom: 1.5%;
+    right: 3%;
+    border-radius: 99px;
+}
+
+#myBar {
+    box-sizing: border-box;
+    padding: 0 1rem;
+    height: 30px;
+    background-color: #4CAF50;
+    text-align: center; /* To center it horizontally (if you want) */
+    line-height: 30px; /* To center it vertically */
+    color: white;
+    border-radius: 99px;
+}
+
+#title {
+    font-size: 72px;
+    transform: rotate(-12deg);
+}
+
+.container {
+    height: 100vh;
+    width: 100vw;
+}
+
+.button {
+    z-index: 2;
+    position: absolute;
+    border: none;
+    font-weight: bold;
+    padding: 8px 16px;
+    border-radius: 8px;
+    background-color: lightgreen;
+}
+
+.button:focus {
+    outline: none;
+}
+
+.button:hover {
+    transform: scale(1.1);
+    filter: brightness(1.1);
+}
+
+.button:active {
+    transform: scale(0.9);
+    filter: brightness(0.9);
+}
+
+#current-level {
+    position: absolute;
+    bottom: 12px;
+    left: 32px;
+}
+
+#score {
+    position: absolute;
+    bottom: 48px;
+    left: 32px;
+}
+
+.toast-active {
+    bottom: 5% !important;
+    opacity: 1 !important;
+}
+
+#toast {
+    opacity: 0;
+    box-sizing: border-box;
+    width: fit-content;
+    padding: 16px 48px;
+    color: white;
+    background-color: lightslategrey;
+    border-radius: 50px;
+    font-size: xxx-large;
+    text-align: left;
+    position: absolute;
+    transition: all 0.05s ease-in-out;
+    left: calc(50% - 378px / 2);
+    bottom: 0;
+}
+
+#toast-message {
+    margin: 0;
+}
