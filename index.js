@@ -24,7 +24,6 @@ let currentScore = 0;
 let isGameOver = false;
 
 let currentHealth = 100;
-// let healthFailStep = 20;
 
 let stepDelayRemoval = 15;
 
@@ -200,7 +199,7 @@ function setUpLevelUpClickListener() {
 
     if (isGameOver) return
 
-    updateHealth({ amount: 10, isAdd: true })
+    updateHealth({ amount: 5, isAdd: true })
 
     buttonTeleportDelay = Math.max(buttonTeleportDelay - stepDelayRemoval, 350)
     currentScore += 25
