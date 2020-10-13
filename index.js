@@ -93,6 +93,13 @@ function getRandomButtonPosition() {
   return { xPos, yPos }
 }
 
+function tempUpdateButtonColor(color) {
+  getButton().style.backgroundColor = color
+  setTimeout(() => {
+    getButton().style.backgroundColor = ''
+  }, buttonTeleportDelay - 200)
+}
+
 function showToastMessage(message, isFail = false) {
   getToastMessage().innerText = message
   getToastMessage().style.left = `calc(50% - ${getToastMessage().innerWidth}px / 2)`
@@ -137,6 +144,7 @@ function setUpOnHoverListener() {
         getButton().setAttribute('disabled', true)
         isGameOver = true
       } else {
+        tempUpdateButtonColor('palevioletred')
         playSound(soundsEnum.FAIL)
         randomlyGrowOrShrinkButton()
         teleportButton()
