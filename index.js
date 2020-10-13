@@ -26,7 +26,7 @@ let isGameOver = false;
 let currentHealth = 100;
 // let healthFailStep = 20;
 
-let stepDelayRemoval = 7;
+let stepDelayRemoval = 15;
 
 let teleportTimeout
 
@@ -203,12 +203,11 @@ function setUpLevelUpClickListener() {
     updateHealth({ amount: 10, isAdd: true })
 
     buttonTeleportDelay = Math.max(buttonTeleportDelay - stepDelayRemoval, 350)
-    console.log('buttonTeleportDelay', buttonTeleportDelay)
     currentScore += 25
     hasHovered = false
 
     getLevelText().innerText = `LEVEL: ${currentLevel}`
-    getScoreText().innerText = `SCORE: ${currentScore}`
+    getScoreText().innerText = `SCORE: ${currentScore % 300 === 0 ? '💩' : currentScore}`
     teleportInterval = setInterval(() => {
       teleportButton()
       updateHealth({ amount: 10, isSubtract: true })
