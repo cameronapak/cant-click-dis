@@ -194,7 +194,7 @@ function setUpLevelUpClickListener() {
     getScoreText().innerText = `SCORE: ${currentScore}`
     teleportInterval = setInterval(() => {
       teleportButton()
-    }, buttonTeleportDelay * 2)
+    }, buttonTeleportDelay * 3)
     teleportButton()
   }
 }
